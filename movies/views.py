@@ -1,30 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
-data = {
-    'movies': [
-        {
-            'id': 5,
-            'title': 'Jaws',
-            'year': 1996,
-        },
-        {
-             'id': 4,
-            'title': 'Sharknado',
-            'year': 2001
-        },
-        {
-             'id': 3,
-            'title': 'The Sharks',
-            'year': 1999
-        }
-    ]
-}
+from .models import Movie
 
 template_name = 'movies/movies.html'
 
 def movies(request):
-    return render(request, template_name, data)
+    data = Movie.objects.all()
+    return render(request, template_name, {'movies': data})
 
 def home(request):
     return HttpResponse("Home page")
+
+def detail(request, id):
+    data = Movie.objects.get(pk=id)
+    return render(request, 'movies/detail.html', {'movie': data})
